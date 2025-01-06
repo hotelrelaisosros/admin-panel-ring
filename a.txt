@@ -1,0 +1,33 @@
+please make the frontend of the orders that will show all of these customization fields
+
+
+means the steps that you are allowing for the customization will come to the admin panel and i need the order to completely show the information
+
+
+
+in the payments you will show the payment of the orders and in this you will break down the pricing to the admin for each step of customization
+
+We are giving the crud to these fields only
+gem shape (step 1)
+birth stone ( step3 )
+Gem stone color (step4 )
+gem stone on step 4
+
+
+check theh folder ending with ST4
+ST1 step 1
+st2 step 2
+so on
+
+create gem stone
+{
+"type": "M",
+"carat": 1.0,
+"shape": "Oval",
+"dimension": "7 mm x 5 mm",
+"faceting": "Excellent",
+"price": 1813.00,
+"gemstone_color_id": 1,
+"color": "D",
+"clarity": "VVS1"
+}
