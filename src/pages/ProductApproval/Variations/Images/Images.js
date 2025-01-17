@@ -1,15 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, Card, Col, Descriptions, Input, Modal, Row, Table, Tooltip, Upload } from "antd";
+import {
+  Avatar,
+  Card,
+  Col,
+  Descriptions,
+  Input,
+  Modal,
+  Row,
+  Table,
+  Tooltip,
+  Upload,
+} from "antd";
 // import ImgCrop from "antd-img-crop";
 import { Loader } from "react-overlay-loader";
 import { useHistory } from "react-router-dom";
 import IMG_URL from "../../../../utils/imageurl";
-import { EyeTwoTone, EyeOutlined, EditOutlined, DeleteOutlined, PictureOutlined } from "@ant-design/icons";
+import {
+  EyeTwoTone,
+  EyeOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  PictureOutlined,
+} from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { CategoryMiddleware } from "../../../../store/category/categoryMiddleware";
 import { toast, ToastContainer } from "react-toastify";
 import { setLoading } from "../../../../store/common/commonSlice";
-import { ImageMiddleware, VariationMiddleware } from "../../../../store/variation/variationMiddleware";
+import {
+  ImageMiddleware,
+  VariationMiddleware,
+} from "../../../../store/variation/variationMiddleware";
 import { useParams } from "react-router-dom/cjs/react-router-dom";
 import { useLocation } from "react-router-dom";
 import { Button, message } from "antd";
@@ -25,24 +45,22 @@ const getBase64 = (file) => {
 };
 
 const Images = () => {
-
   const { search } = useLocation();
   const queryParams = new URLSearchParams(search);
 
   const variant_id = queryParams.get("variant_id") ?? "";
   const product_id = queryParams.get("product_id");
   const commonData = new FormData();
-  commonData.append('product_id', product_id)
+  commonData.append("product_id", product_id);
   if (variant_id) {
-    commonData.append('variant_id', variant_id); 
-}
+    commonData.append("variant_id", variant_id);
+  }
 
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
   const [cateName, setCateName] = useState("");
   const [subCateName, setSubCateName] = useState("");
-
 
   const [fileList, setFileList] = useState([]);
   const [fileList2, setFileList2] = useState([]);
@@ -52,8 +70,6 @@ const Images = () => {
 
   //   const data = useSelector((state) => state.category.categories.Category);
   const data = useSelector((state) => state.image.images);
-
-
 
   const [varId, setVarId] = useState("");
   const [fileList1Error, setFileList1Error] = useState(false);
@@ -71,15 +87,13 @@ const Images = () => {
   // new fields
   const [indImage, setIndImage] = useState([]);
 
-
   const [recordToDelete, setRecordToDelete] = useState(null); // State to track the record being deleted
-  const [previewOpenDeleteSingleImage, setPreviewOpenDeleteSingleImage] = useState(false); // Modal visibility state
-
+  const [previewOpenDeleteSingleImage, setPreviewOpenDeleteSingleImage] =
+    useState(false); // Modal visibility state
 
   let token = localStorage.getItem("token");
 
   //images handle
-
 
   const [records, setRecords] = useState(data);
 
@@ -97,7 +111,6 @@ const Images = () => {
     formData.append("id", recordId);
     formData.append("image_url", modifiedImageUrl);
     formData.append("type", type);
-
 
     dispatch(ImageMiddleware.DeleteOneImageRecord(formData, token))
       .then((res) => {
@@ -120,19 +133,11 @@ const Images = () => {
         console.log("ERROR DELETING ONE IMAGE =>", err);
         setPreviewOpenDeleteSingleImage(false); // Close modal on error
       });
-
   };
 
-
-
-
-
   useEffect(() => {
-
     dispatch(ImageMiddleware.GetImages(commonData, token));
   }, []);
-
-
 
   useEffect(() => {
     if (fileList?.length === 0) {
@@ -150,11 +155,7 @@ const Images = () => {
     }
   }, [fileList2]);
 
-
   const handleCancel = () => setPreviewOpen(false);
-
-
-
 
   const handleOpenAddModal = () => {
     setPreviewOpenAdd(true);
@@ -169,16 +170,13 @@ const Images = () => {
     setFileList1Error(false);
   };
 
-
   const handleCloseAddModal = () => {
     setPreviewOpenAdd(false);
     setFileList([]);
     setFileList2([]);
     setFileList1Error(false);
     setFileList2Error(false);
-
   };
-
 
   const handleOpenDelete = (rowData) => {
     setVarId(rowData.id);
@@ -191,12 +189,12 @@ const Images = () => {
     dispatch(setLoading(true));
 
     const formData = new FormData();
-    formData.append("id" , varId)
+    formData.append("id", varId);
 
     dispatch(ImageMiddleware.DeleteAllImages(formData, token))
       .then((res) => {
         dispatch(setLoading(false));
-       
+
         dispatch(ImageMiddleware.GetImages(commonData, token));
         toast.success(res.data?.message, {
           position: "bottom-left",
@@ -207,7 +205,7 @@ const Images = () => {
       .catch((err) => {
         dispatch(setLoading(false));
         const formdata = new FormData();
-        formdata.append('product_id', id);
+        formdata.append("product_id", id);
         dispatch(ImageMiddleware.GetImages(commonData, token));
         toast.error(err?.data?.message, {
           position: "bottom-left",
@@ -216,7 +214,6 @@ const Images = () => {
         console.log("ERROR DELETED IMAGE =>", err);
       });
   };
-
 
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [previewImageOnly, setPreviewImageOnly] = useState("");
@@ -230,21 +227,22 @@ const Images = () => {
     setIsPreviewOpen(false);
   };
 
-
-
   const [image, setImage] = React.useState("");
   const [imageCollection, setImageCollection] = React.useState([]);
   const [storedFile, setStoredFile] = useState(null); // Variable to store the file
 
-
   const handlePreview = async (file) => {
     setPreviewImage(file?.url || file?.thumbUrl);
-    setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf("/") + 1));
+    setPreviewTitle(
+      file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
+    );
     setPreviewOpen(true);
   };
 
-
-  const validateImageFile = (file, allowedTypes = ["image/jpeg", "image/png", "image/gif"]) => {
+  const validateImageFile = (
+    file,
+    allowedTypes = ["image/jpeg", "image/png", "image/gif"]
+  ) => {
     const isValid = allowedTypes.includes(file.type);
     if (!isValid) {
       toast.error("You can only upload JPG, PNG, or GIF files!");
@@ -284,19 +282,17 @@ const Images = () => {
     console.log(updatedFileList); // Log the new file list directly
   };
 
+  const [previewOpenAddInd, setPreviewOpenAddInd] = useState(false);
 
-  const [previewOpenAddInd,setPreviewOpenAddInd] = useState(false);
-
-  const [checkRecordId,setCheckRecordId] = useState("");
-  const [checkType,setCheckType] = useState("");
-
+  const [checkRecordId, setCheckRecordId] = useState("");
+  const [checkType, setCheckType] = useState("");
 
   const handleAddOneImage = (recordId, type) => {
-    setPreviewOpenAddInd(true)
+    setPreviewOpenAddInd(true);
     setCheckRecordId(recordId);
     setCheckType(type);
-  }
-  const submitAddIndImage = () =>{
+  };
+  const submitAddIndImage = () => {
     const formData = new FormData();
 
     formData.append("image_id", checkRecordId);
@@ -334,14 +330,16 @@ const Images = () => {
     formData.append("product_id", product_id);
     formData.append("variant_id", variant_id);
     if (fileList.length > 0) {
-      formData.append("product_single_image", fileList[0].originFileObj || fileList[0]);
+      formData.append(
+        "product_single_image",
+        fileList[0].originFileObj || fileList[0]
+      );
     }
 
     fileList2.forEach((file, index) => {
       formData.append("product_multiple_images[]", file.originFileObj || file);
     });
     // Resetting new fields after submission
-
 
     // Submit data (assuming you combine with the previous fields later)
     dispatch(ImageMiddleware.AddImage(formData, token))
@@ -369,6 +367,11 @@ const Images = () => {
 
   const columns = [
     {
+      title: <p>ID</p>,
+      dataIndex: "id",
+      key: "id",
+    },
+    {
       title: <p>Image</p>,
       dataIndex: "image",
       key: "image",
@@ -382,10 +385,12 @@ const Images = () => {
                 height: "100px",
               }}
               onMouseEnter={(e) =>
-                e.currentTarget.querySelector(".image-actions").style.display = "flex"
+                (e.currentTarget.querySelector(".image-actions").style.display =
+                  "flex")
               }
               onMouseLeave={(e) =>
-                e.currentTarget.querySelector(".image-actions").style.display = "none"
+                (e.currentTarget.querySelector(".image-actions").style.display =
+                  "none")
               }
             >
               <img
@@ -467,10 +472,12 @@ const Images = () => {
                 margin: "10px",
               }}
               onMouseEnter={(e) =>
-                e.currentTarget.querySelector(".image-actions").style.display = "flex"
+                (e.currentTarget.querySelector(".image-actions").style.display =
+                  "flex")
               }
               onMouseLeave={(e) =>
-                e.currentTarget.querySelector(".image-actions").style.display = "none"
+                (e.currentTarget.querySelector(".image-actions").style.display =
+                  "none")
               }
             >
               <img
@@ -504,7 +511,9 @@ const Images = () => {
                     color: "white",
                     cursor: "pointer",
                   }}
-                  onClick={() => handleDeleteImage(record.id, img, "additional")}
+                  onClick={() =>
+                    handleDeleteImage(record.id, img, "additional")
+                  }
                 />
                 <EyeOutlined
                   style={{
@@ -536,22 +545,19 @@ const Images = () => {
         </div>
       ),
     },
-      {
-          title: <p className="ant-employed fw-bold">ACTION</p>,
-          render: (rowData) => (
-            <div>
-              <Tooltip title="delete">
-                
-                <a onClick={() => handleOpenDelete(rowData)}>
-                  <DeleteOutlined style={{ color: "red", fontSize: "20px" }} />
-                </a>
-              </Tooltip>
-      
-            </div>
-          ),
-        },
+    {
+      title: <p className="ant-employed fw-bold">ACTION</p>,
+      render: (rowData) => (
+        <div>
+          <Tooltip title="delete">
+            <a onClick={() => handleOpenDelete(rowData)}>
+              <DeleteOutlined style={{ color: "red", fontSize: "20px" }} />
+            </a>
+          </Tooltip>
+        </div>
+      ),
+    },
   ];
-
 
   return (
     <>
@@ -561,7 +567,6 @@ const Images = () => {
         autoClose: 2000,
       }) : ""} */}
       <ToastContainer />
-
       <Modal
         centered
         title={
@@ -584,8 +589,6 @@ const Images = () => {
       >
         <h6>Are you sure want to delete this image?</h6>
       </Modal>
-
-
       {/* open image model */}
       <Modal
         open={isPreviewOpen}
@@ -598,12 +601,9 @@ const Images = () => {
           alt="Preview"
           style={{ width: "100%", height: "auto" }}
         />
-      </Modal>;
-
-
+      </Modal>
       {/* create variant model */}
-
- <Modal
+      <Modal
         centered
         title={
           <h5
@@ -652,7 +652,11 @@ const Images = () => {
                           URL.createObjectURL(fileList[0].originFileObj)
                         }
                         alt="Upload Preview"
-                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                        }}
                       />
                     )}
                   </Upload>
@@ -737,11 +741,9 @@ const Images = () => {
             <img alt="example" style={{ width: "100%" }} src={previewImage} />
           </Modal>
         </Card>
-      </Modal>;
-
-{/* create ind model */}
-
-<Modal
+      </Modal>
+      {/* create ind model */}
+      <Modal
         centered
         title={
           <h5
@@ -790,7 +792,11 @@ const Images = () => {
                           URL.createObjectURL(indImage[0].originFileObj)
                         }
                         alt="Upload Preview"
-                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                        }}
                       />
                     )}
                   </Upload>
@@ -801,8 +807,6 @@ const Images = () => {
                   )}
                 </div>
               </Card>
-
-            
             </Col>
           </Row>
 
@@ -816,12 +820,9 @@ const Images = () => {
             <img alt="example" style={{ width: "100%" }} src={previewImage} />
           </Modal>
         </Card>
-      </Modal>;
-
-
+      </Modal>
       {/* delete models */}
       {/* all images */}
-
       <Modal
         centered
         title={
@@ -844,11 +845,6 @@ const Images = () => {
       >
         <h6>Are you sure want to delete IMAGES!</h6>
       </Modal>
-
-
-
-
-
       <div className="tabled">
         <Row gutter={[24, 0]}>
           <Col xs="24" xl={24}>

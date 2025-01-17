@@ -12,7 +12,7 @@ import {
   setSettingHeights,
   setBespokeCustomizations,
   setBespokeWithTypes,
-  setAccentStoneTypes
+  setAccentStoneTypes,
 } from "./customizationSlice";
 
 export class CustomizationMiddleware extends Component {
@@ -21,7 +21,7 @@ export class CustomizationMiddleware extends Component {
       try {
         dispatch(setLoading(true));
         const res = await ApiCaller.Get("/api/v1/products/gemshapes");
-        
+
         if (res.data.gemshapes) {
           dispatch(setGemShapes(res.data.gemshapes));
         }
@@ -34,14 +34,12 @@ export class CustomizationMiddleware extends Component {
     };
   }
 
- 
-
   static fetchGemStoneColors(token) {
     return async (dispatch) => {
       try {
         dispatch(setLoading(true));
         const res = await ApiCaller.Get("/api/v1/products/gem_stones_colors");
-        
+
         if (res.data.GemStoneColors) {
           dispatch(setGemStoneColors(res.data.GemStoneColors));
         }
@@ -54,11 +52,239 @@ export class CustomizationMiddleware extends Component {
     };
   }
 
+  static fetchBsp() {
+    return async (dispatch) => {
+      try {
+        dispatch(setLoading(true));
+        const res = await ApiCaller.Get(
+          "/api/v1/products/bespoke_customization"
+        );
+
+        if (res.data?.BespokeCustomizations) {
+          dispatch(setBespokeCustomizations(res.data?.BespokeCustomizations));
+        }
+        dispatch(setNetworkError(false));
+      } catch (error) {
+        dispatch(setNetworkError(true));
+      } finally {
+        dispatch(setLoading(false));
+      }
+    };
+  }
+  static createBsp(data) {
+    return async (dispatch) => {
+      try {
+        dispatch(setLoading(true));
+
+        const res = await ApiCaller.Post(
+          "/api/v1/products/bespoke_customization",
+          data
+        );
+
+        if (res.status === 200) {
+          dispatch(setNetworkError(false));
+          return { success: true, message: res.data.message };
+        } else {
+          dispatch(setNetworkError(false));
+          return { success: false, message: res.data.message };
+        }
+      } catch (error) {
+        dispatch(setNetworkError(true));
+        return {
+          success: false,
+          message: error?.response?.data?.message || "Something went wrong",
+        };
+      } finally {
+        dispatch(setLoading(false));
+      }
+    };
+  }
+  static updateBsp(id, data) {
+    return async (dispatch) => {
+      try {
+        dispatch(setLoading(true));
+
+        const res = await ApiCaller.Post(
+          "/api/v1/products/bespoke_customization/" + id,
+          data
+        );
+
+        if (res.status === 200) {
+          dispatch(setNetworkError(false));
+          return { success: true, message: res.data.message };
+        } else {
+          dispatch(setNetworkError(false));
+          return { success: false, message: res.data.message };
+        }
+      } catch (error) {
+        dispatch(setNetworkError(true));
+        return {
+          success: false,
+          message: error?.response?.data?.message || "Something went wrong",
+        };
+      } finally {
+        dispatch(setLoading(false));
+      }
+    };
+  }
+  static deleteBsp(id) {
+    return async (dispatch) => {
+      try {
+        dispatch(setLoading(true));
+
+        const res = await ApiCaller.Delete(
+          "/api/v1/products/bespoke_customization/" + id
+        );
+
+        if (res.status === 200) {
+          dispatch(setNetworkError(false));
+          return { success: true, message: res.data.message };
+        } else {
+          dispatch(setNetworkError(false));
+          return { success: false, message: res.data.message };
+        }
+      } catch (error) {
+        dispatch(setNetworkError(true));
+        return {
+          success: false,
+          message: error?.response?.data?.message || "Something went wrong",
+        };
+      } finally {
+        dispatch(setLoading(false));
+      }
+    };
+  }
+
+  static fetchBsp_type(id) {
+    return async (dispatch) => {
+      try {
+        dispatch(setLoading(true));
+        const res = await ApiCaller.Get(
+          "/api/v1/products/bespoke_customization_types"
+        );
+
+        if (res.data?.GemStoneColors) {
+          dispatch(setBespokeWithTypes(res.data?.BespokeCustomizationTypes));
+        }
+        dispatch(setNetworkError(false));
+      } catch (error) {
+        dispatch(setNetworkError(true));
+      } finally {
+        dispatch(setLoading(false));
+      }
+    };
+  }
+
+  static fetch_bsp_type_by_bsp(id) {
+    return async (dispatch) => {
+      try {
+        dispatch(setLoading(true));
+        const res = await ApiCaller.Get(
+          "/api/v1/products/bespoke_customization_types/child/" + id
+        );
+
+        if (res.data?.BespokeCustomizationTypes) {
+          dispatch(setBespokeWithTypes(res.data?.BespokeCustomizationTypes));
+        }
+        dispatch(setNetworkError(false));
+      } catch (error) {
+        dispatch(setNetworkError(true));
+      } finally {
+        dispatch(setLoading(false));
+      }
+    };
+  }
+  static createBsp_type(data) {
+    return async (dispatch) => {
+      try {
+        dispatch(setLoading(true));
+
+        const res = await ApiCaller.Post(
+          "/api/v1/products/bespoke_customization_types",
+          data
+        );
+
+        if (res.status === 200) {
+          dispatch(setNetworkError(false));
+          return { success: true, message: res.data.message };
+        } else {
+          dispatch(setNetworkError(false));
+          return { success: false, message: res.data.message };
+        }
+      } catch (error) {
+        dispatch(setNetworkError(true));
+        return {
+          success: false,
+          message: error?.response?.data?.message || "Something went wrong",
+        };
+      } finally {
+        dispatch(setLoading(false));
+      }
+    };
+  }
+
+  static updateBsp_type(id, data) {
+    return async (dispatch) => {
+      try {
+        dispatch(setLoading(true));
+
+        const res = await ApiCaller.Post(
+          "/api/v1/products/bespoke_customization_types/" + id,
+          data
+        );
+
+        if (res.status === 200) {
+          dispatch(setNetworkError(false));
+          return { success: true, message: res.data.message };
+        } else {
+          dispatch(setNetworkError(false));
+          return { success: false, message: res.data.message };
+        }
+      } catch (error) {
+        dispatch(setNetworkError(true));
+        return {
+          success: false,
+          message: error?.response?.data?.message || "Something went wrong",
+        };
+      } finally {
+        dispatch(setLoading(false));
+      }
+    };
+  }
+
+  static deleteBsp_type(id) {
+    return async (dispatch) => {
+      try {
+        dispatch(setLoading(true));
+
+        const res = await ApiCaller.Delete(
+          "/api/v1/products/bespoke_customization_types/" + id
+        );
+
+        if (res.status === 200) {
+          dispatch(setNetworkError(false));
+          return { success: true, message: res.data.message };
+        } else {
+          dispatch(setNetworkError(false));
+          return { success: false, message: res.data.message };
+        }
+      } catch (error) {
+        dispatch(setNetworkError(true));
+        return {
+          success: false,
+          message: error?.response?.data?.message || "Something went wrong",
+        };
+      } finally {
+        dispatch(setLoading(false));
+      }
+    };
+  }
+
   static fetchAllCustomizationData(token) {
     return async (dispatch) => {
       try {
         dispatch(setLoading(true));
-        
+
         const [
           gemShapes,
           gemStoneColors,
@@ -70,7 +296,7 @@ export class CustomizationMiddleware extends Component {
           settingHeights,
           bespokeCustomizations,
           bespokeWithTypes,
-          accentStoneTypes
+          accentStoneTypes,
         ] = await Promise.all([
           ApiCaller.Get("/api/v1/products/gemshapes"),
           ApiCaller.Get("/api/v1/products/gem_stones_colors"),
@@ -82,7 +308,7 @@ export class CustomizationMiddleware extends Component {
           ApiCaller.Get("/api/v1/customization/setting_height"),
           ApiCaller.Get("/api/v1/customization/bespoke_customization"),
           ApiCaller.Get("/api/v1/customization/bespoke_with_types"),
-          ApiCaller.Get("/api/v1/customization/accent_stone_type")
+          ApiCaller.Get("/api/v1/customization/accent_stone_type"),
         ]);
 
         dispatch(setGemShapes(gemShapes.data.gemshapes || []));
@@ -93,8 +319,12 @@ export class CustomizationMiddleware extends Component {
         dispatch(setRingSizes(ringSizes.data.data || []));
         dispatch(setBandWidths(bandWidths.data.data || []));
         dispatch(setSettingHeights(settingHeights.data.data || []));
-        dispatch(setBespokeCustomizations(bespokeCustomizations.data.data || []));
-        dispatch(setBespokeWithTypes(bespokeWithTypes.data.BespokeCustomizations || []));
+        dispatch(
+          setBespokeCustomizations(bespokeCustomizations.data.data || [])
+        );
+        dispatch(
+          setBespokeWithTypes(bespokeWithTypes.data.BespokeCustomizations || [])
+        );
         dispatch(setAccentStoneTypes(accentStoneTypes.data.data || []));
         dispatch(setNetworkError(false));
       } catch (error) {
@@ -109,9 +339,12 @@ export class CustomizationMiddleware extends Component {
     return async (dispatch) => {
       try {
         dispatch(setLoading(true));
-        
-        const res = await ApiCaller.Post("/api/v1/products/update_customization", selections);
-       
+
+        const res = await ApiCaller.Post(
+          "/api/v1/products/update_customization",
+          selections
+        );
+
         if (res.status === 200) {
           dispatch(setNetworkError(false));
           return { success: true, message: res.data.Message };
@@ -119,10 +352,12 @@ export class CustomizationMiddleware extends Component {
           dispatch(setNetworkError(false));
           return { success: false, message: res.data.Message };
         }
-
       } catch (error) {
         dispatch(setNetworkError(true));
-        return { success: false, message: error?.response?.data?.Message || 'Something went wrong' };
+        return {
+          success: false,
+          message: error?.response?.data?.Message || "Something went wrong",
+        };
       } finally {
         dispatch(setLoading(false));
       }

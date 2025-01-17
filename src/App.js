@@ -16,6 +16,8 @@ import RegisteredProfile from "./pages/RegisteredAccount/RegisteredProfile";
 import Banner from "./pages/Banner/Banner";
 import Customize from "./pages/Customize/Customize";
 import GemShape from "./pages/Customize/GemShape";
+import Bespoke from "./pages/Customize/Bespoke";
+
 import BirthStone from "./pages/Customize/BirthStone";
 import GemStoneColor from "./pages/Customize/GemStoneColor";
 import GemStone from "./pages/Customize/GemStone";
@@ -109,17 +111,20 @@ function App() {
       <Switch>
 
 
-      <Route path="/viewVariationImages" component={Images} />
-      <Route path="/viewSingleVariation/:id" component={SingleVariation} />
-
-      <Route  path="/variations/:id" component={Variations} />
-
+   
 
         <Route path="/" exact component={Login} />
         <Route path="/forgetpassword" exact component={ForgetPassword} />
         <Route path="/resetpassword" exact component={ResetPassword} />
         {/* {match === false && <Route path='*' component={Error} />} */}
         <Main>
+        <Route path="/viewVariationImages" component={Images} />
+      <Route path="/viewSingleVariation/:id" component={SingleVariation} />
+
+      <Route path="/customize/bespoke" component={Bespoke} />
+
+      <Route  path="/variations/:id" component={Variations} />
+
           <Route path="/promotion" component={Promotion} />
           <Route path="/payments" component={Payments} />
           <Route path="/dashboard" component={Dashboard} />

@@ -106,7 +106,7 @@ function Sidenav({ color }) {
   <div
 onClick={() => {
   toggleProducts();
-  history.push("/productApproval"); // Navigate to the desired URL
+  history.push("/productApproval"); // Nacustovigate to the desired URL
 }}    style={{
       display: "flex",
       alignItems: "center",
@@ -125,30 +125,21 @@ onClick={() => {
     </span>
     <label className="">Products</label>
     {/* Toggle arrow icon based on submenu state */}
-    <span
-      style={{
-        marginLeft: "auto",
-        display: "flex",
-        alignItems: "center",
-      }}
-    >
-      {isProductsOpen ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
-    </span>
+
   </div>
 
   {/* Submenu for Products */}
   {isProductsOpen && (
     <div className="submenu" style={{ paddingLeft: 20 }}>
       {/* Product Approval */}
-      <Menu.Item key="7-1">
+      {/* <Menu.Item key="7-1">
         <NavLink
           key={"productApproval"}
           to="/productApproval"
           state={{ myState: "myStateValue" }}
         >
-          {/* <span>Product Approval</span> */}
         </NavLink>
-      </Menu.Item>
+      </Menu.Item> */}
 
       {/* Customize Section */}
       <Menu.Item key="7-2">
@@ -195,6 +186,9 @@ onClick={() => {
               <NavLink to="/customize/gem-stone-color">
                 Gem Stone Color
               </NavLink>
+            </Menu.Item>
+            <Menu.Item key="7-2-3">
+              <NavLink to="/customize/bespoke">Bespoke</NavLink>
             </Menu.Item>
             <Menu.Item key="7-2-4">
               <NavLink to="/customize/gem-stone">Gem Stone</NavLink>
